@@ -30,13 +30,29 @@ const ToDoList = () => {
         setAccesability(0);
     }
 
+    //Delete Feature
     const handleDelete = useCallback((id) => {
-        setToDoList(prevToDoList => prevToDoList.filter((to) => todo.id !== id));
+        setToDoList(prevToDoLists => prevToDoLists.filter((toDoList) => toDoList.id !== id));
     }, []);
+
+    //useMemo for total count
+    const totalCount = useMemo(() => toDoList.length, [toDoList]);
+
+    //useEffect for Persistency
+    useEffect(() => {
+        const storedTodoList = JSON.parse(localStorage.getItem('toDoList')) || [];
+        setTodos(storedTodoList);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('toDoList', JSON.stringify(toDoList));
+    }, [toDoList]);
 
     return (
     <div>
       {/*handle form return*/}
+      <h2>Todo List</h2>
+      <p>Total items: {totalCount}</p>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -98,6 +114,7 @@ const ToDoList = () => {
       </ul>
       
     </div>
-  );
-
+  ); 
 };
+
+export default ToDoList;
