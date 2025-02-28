@@ -14,6 +14,7 @@ const ToDoList = () => {
         e.preventDefault();
 
         const newToDoList = {
+            id: Date.now(),
             activity,
             price,
             type,
@@ -28,6 +29,10 @@ const ToDoList = () => {
         setBookings(false);
         setAccesability(0);
     }
+
+    const handleDelete = useCallback((id) => {
+        setToDoList(prevToDoList => prevToDoList.filter((to) => todo.id !== id));
+    }, []);
 
     return (
     <div>
@@ -80,6 +85,18 @@ const ToDoList = () => {
         </label>
         <button type="submit">Add Todo</button>
       </form>
+      
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            {todo.activity} - ${todo.price} - {todo.type} - Booking:{' '}
+            {todo.bookingRequired ? 'Yes' : 'No'} - Accessibility:{' '}
+            {todo.accessibility.toFixed(2)}
+            <button onClick={() => handleDelete(todo.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      
     </div>
   );
 
